@@ -1,24 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,{useState} from 'react';
+import './App.css'
+import Form from './Components/Form';
+import Title from './Components/Title';
+import Task from './Components/Task'
+import DelBtn from './Components/DelBtn'
+import EditBtn from './Components/EditBtn'
 
+ 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [todos,setTodos]=useState([])
+  
+  const delTask=(i)=>{
+  
+    const tasks=Object.assign([],todos)
+    tasks.splice(i,1)
+  setTodos(...[tasks])
+  }
+const editTask=(i,text)=>{
+  const newTask=prompt('New task',text)
+          if(newTask!==''){
+          const tasks=Object.assign([],todos)
+          tasks.splice(i,1,newTask)
+          setTodos(...[tasks])
+}
+  }
+  
+return (
+    <div className="App" >
+      <Title/>
+      <Form onSubmit={text=>{text!==''?setTodos([...todos,text]):setTodos([...todos])}}/>
+      <div className='todos'>
+
+        {todos.map((text,i)=><Task >{text}
+        <div>
+          <EditBtn handlerEdit={()=>editTask(i,text)}/>
+          <DelBtn handlerDel={()=>delTask(i)}/>
+          </div>
+          </Task>)}
+        
+         
+      </div>
+   
     </div>
   );
 }
